@@ -10,35 +10,34 @@ import { formatDistance, formatDuration } from '../src/utils/geo';
 import {
   startTracking,
   stopTracking,
-  isCurrentlyTracking,
 } from '../src/services/gpsTracker';
-import { saveRun } from '../src/services/storage';
-import { RunStats, RunData } from '../src/types';
+import { api } from '../src/api/client';
+import { useAuth } from '../src/contexts/AuthContext';
+import { RunStats } from '../src/types';
 
 export default function RunScreen() {
-  const [isRunning, setIsRunning] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
+  const { refreshUser } = useAuth();
   const [stats, setStats] = useState<RunStats>({
     distance: 0,
     duration: 0,
     pace: '--:--',
-    cells: 0,
     currentSpeed: null,
     routeCoordinates: [],
+    cellsClaimed: 0,
+    cellsStolen: 0,
+    totalCells: 0,
     claimedCellIds: [],
   });
-  const [claimedCells, setClaimedCells] = useState<{ id: string; ownerId: string | null }[]>([]);
+  const [saving, setSaving] = useState(false);
 
-  // Timer para duração (já que o GPS não atualiza constantemente)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startTimeRef = useRef<number>(0);
+  const prevCellsRef = useRef<number>(0);
 
   useEffect(() => {
-    // Inicia corrida automaticamente ao entrar na tela
     handleStart();
 
     return () => {
-      // Cleanup ao sair da tela
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
@@ -46,10 +45,8 @@ export default function RunScreen() {
   }, []);
 
   async function handleStart() {
-    setIsRunning(true);
     startTimeRef.current = Date.now();
 
-    // Timer para atualizar duração a cada segundo
     timerRef.current = setInterval(() => {
       setStats((prev) => ({
         ...prev,
@@ -58,17 +55,7 @@ export default function RunScreen() {
     }, 1000);
 
     const started = await startTracking((newStats) => {
-      // Vibra quando conquista nova célula
-      if (newStats.cells > stats.cells) {
-        Vibration.vibrate(50);
-      }
-
       setStats(newStats);
-
-      // Atualiza células no mapa
-      setClaimedCells(
-        newStats.claimedCellIds.map((id) => ({ id, ownerId: 'me' }))
-      );
     });
 
     if (!started) {
@@ -86,48 +73,84 @@ export default function RunScreen() {
         {
           text: 'Parar',
           style: 'destructive',
-          onPress: async () => {
-            if (timerRef.current) {
-              clearInterval(timerRef.current);
-            }
-
-            const result = await stopTracking();
-
-            // Vibra ao finalizar
-            Vibration.vibrate([0, 100, 50, 100]);
-
-            // Mostra resumo
-            Alert.alert(
-              'Corrida finalizada!',
-              `Distância: ${formatDistance(result.distance)}\n` +
-                `Duração: ${formatDuration(result.duration)}\n` +
-                `Células conquistadas: ${result.cells.length}`,
-              [
-                {
-                  text: 'OK',
-                  onPress: () => router.back(),
-                },
-              ]
-            );
-          },
+          onPress: finishRun,
         },
       ]
     );
   }
 
+  async function finishRun() {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+
+    setSaving(true);
+    const result = await stopTracking();
+
+    // Vibra ao finalizar
+    Vibration.vibrate([0, 100, 50, 100]);
+
+    // Salva no backend
+    try {
+      const endTime = new Date();
+      const startTime = new Date(endTime.getTime() - result.duration);
+
+      await api.createRun({
+        distance: result.distance,
+        duration: result.duration,
+        avgPace: result.distance > 0
+          ? (result.duration / 60000) / (result.distance / 1000)
+          : undefined,
+        startedAt: startTime.toISOString(),
+        endedAt: endTime.toISOString(),
+        routeCoordinates: result.points.map(p => [p.longitude, p.latitude]),
+        cellsClaimed: result.cellsClaimed,
+      });
+
+      // Atualiza stats do usuário
+      await refreshUser();
+
+      const totalCells = result.cellsClaimed.length + result.cellsStolen.length;
+      Alert.alert(
+        'Corrida salva!',
+        `Distância: ${formatDistance(result.distance)}\n` +
+          `Duração: ${formatDuration(result.duration)}\n` +
+          `Células conquistadas: ${totalCells}`,
+        [{ text: 'OK', onPress: () => router.back() }]
+      );
+    } catch (error) {
+      console.error('Erro ao salvar corrida:', error);
+      const totalCells = result.cellsClaimed.length + result.cellsStolen.length;
+      Alert.alert(
+        'Corrida finalizada',
+        `Distância: ${formatDistance(result.distance)}\n` +
+          `Duração: ${formatDuration(result.duration)}\n` +
+          `Células: ${totalCells}\n\n` +
+          '(Erro ao sincronizar com servidor)',
+        [{ text: 'OK', onPress: () => router.back() }]
+      );
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  // Posição atual para centralizar o mapa
+  const currentPosition = stats.routeCoordinates.length > 0
+    ? stats.routeCoordinates[stats.routeCoordinates.length - 1]
+    : undefined;
+
   return (
     <View style={styles.container}>
-      {/* Mapa com rota */}
       <View style={styles.mapContainer}>
         <TerritoryMap
-          userCells={claimedCells}
           routeCoordinates={stats.routeCoordinates}
+          userCells={stats.claimedCellIds}
           showUserLocation={true}
           followUser={true}
+          simulatedPosition={currentPosition}
         />
       </View>
 
-      {/* Stats bar */}
       <SafeAreaView style={styles.statsContainer} edges={['bottom']}>
         <View style={styles.statsRow}>
           <StatBox
@@ -146,18 +169,18 @@ export default function RunScreen() {
           />
           <StatBox
             label="Células"
-            value={stats.cells.toString()}
+            value={stats.totalCells.toString()}
             size="medium"
           />
         </View>
 
-        {/* Botão de parar */}
         <View style={styles.buttonContainer}>
           <Button
-            title="PARAR"
+            title={saving ? 'SALVANDO...' : 'PARAR'}
             onPress={handleStop}
             variant="danger"
             size="large"
+            loading={saving}
           />
         </View>
       </SafeAreaView>

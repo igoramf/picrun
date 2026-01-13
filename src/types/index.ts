@@ -13,6 +13,15 @@ export interface ProcessedPoint extends GpsPoint {
   cellId: string; // H3 cell ID
 }
 
+// Célula do mapa (hexágono H3)
+export interface Cell {
+  id: string; // H3 cell ID
+  ownerId: string | null;
+  ownerColor: string | null;
+  claimedAt: number | null;
+}
+
+// Dados de uma corrida
 export interface RunData {
   id: string;
   userId: string;
@@ -21,15 +30,10 @@ export interface RunData {
   points: ProcessedPoint[];
   distance: number; // metros
   duration: number; // ms
-  cells: string[]; // H3 cell IDs conquistados
+  cellsClaimed: string[]; // IDs das células conquistadas
+  cellsStolen: string[]; // IDs das células roubadas de outros
   averagePace: number; // segundos por km
   status: 'active' | 'paused' | 'completed';
-}
-
-export interface Cell {
-  id: string; // H3 cell ID
-  ownerId: string | null;
-  claimedAt: number | null;
 }
 
 export interface User {
@@ -39,17 +43,22 @@ export interface User {
   avatar: string | null;
   city: string | null;
   totalDistance: number;
-  totalCells: number;
+  totalCells: number; // Número de células que possui
   createdAt: number;
 }
 
+// Stats em tempo real durante a corrida
 export interface RunStats {
   distance: number;
   duration: number;
   pace: string;
-  cells: number;
   currentSpeed: number | null;
   routeCoordinates: [number, number][]; // [lng, lat][]
+  // Células conquistadas nesta corrida
+  cellsClaimed: number; // células novas (eram vazias)
+  cellsStolen: number; // células roubadas de outros
+  totalCells: number; // total (claimed + stolen)
+  // IDs das células para mostrar no mapa
   claimedCellIds: string[];
 }
 

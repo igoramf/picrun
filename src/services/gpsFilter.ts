@@ -6,6 +6,11 @@ let lastValidPoint: GpsPoint | null = null;
 
 // Valida se um ponto GPS é confiável
 export function isValidPoint(point: GpsPoint): boolean {
+  // Em modo simulação, aceita todos os pontos
+  if (GPS_CONFIG.SIMULATE_GPS) {
+    return true;
+  }
+
   // Precisão muito ruim
   if (point.accuracy > GPS_CONFIG.MAX_ACCURACY) {
     console.log(`[GPS] Descartado: precisão ruim (${point.accuracy}m)`);

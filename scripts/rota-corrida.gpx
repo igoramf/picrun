@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="Stride App Test">
+  <metadata>
+    <name>Corrida Campina Grande - Riachuelo ao Partage</name>
+    <desc>Rota de corrida da Rua Riachuelo 847 até o Partage Shopping Campina Grande</desc>
+  </metadata>
+  <trk>
+    <name>Riachuelo ao Partage Shopping</name>
+    <trkseg>
+      <!-- Início: Rua Riachuelo 847, Liberdade, Campina Grande PB -->
+      <trkpt lat="-7.21500" lon="-35.87500">
+        <time>2024-01-15T08:00:00Z</time>
+      </trkpt>
+      <trkpt lat="-7.21550" lon="-35.87520">
+        <time>2024-01-15T08:00:05Z</time>
+      </trkpt>
+      <trkpt lat="-7.21600" lon="-35.87540">
+        <time>2024-01-15T08:00:10Z</time>
+      </trkpt>
+      <trkpt lat="-7.21650" lon="-35.87560">
+        <time>2024-01-15T08:00:15Z</time>
+      </trkpt>
+      <trkpt lat="-7.21700" lon="-35.87580">
+        <time>2024-01-15T08:00:20Z</time>
+      </trkpt>
+      <trkpt lat="-7.21750" lon="-35.87600">
+        <time>2024-01-15T08:00:25Z</time>
+      </trkpt>
+      <trkpt lat="-7.21800" lon="-35.87620">
+        <time>2024-01-15T08:00:30Z</time>
+      </trkpt>
+      <trkpt lat="-7.21850" lon="-35.87640">
+        <time>2024-01-15T08:00:35Z</time>
+      </trkpt>
+      <trkpt lat="-7.21900" lon="-35.87660">
+        <time>2024-01-15T08:00:40Z</time>
+      </trkpt>
+      <trkpt lat="-7.21950" lon="-35.87680">
+        <time>2024-01-15T08:00:45Z</time>
+      </trkpt>
+      <trkpt lat="-7.22000" lon="-35.87700">
+        <time>2024-01-15T08:00:50Z</time>
+      </trkpt>
+      <trkpt lat="-7.22050" lon="-35.87720">
+        <time>2024-01-15T08:00:55Z</time>
+      </trkpt>
+      <trkpt lat="-7.22100" lon="-35.87740">
+        <time>2024-01-15T08:01:00Z</time>
+      </trkpt>
+      <trkpt lat="-7.22150" lon="-35.87760">
+        <time>2024-01-15T08:01:05Z</time>
+      </trkpt>
+      <trkpt lat="-7.22200" lon="-35.87780">
+        <time>2024-01-15T08:01:10Z</time>
+      </trkpt>
+      <trkpt lat="-7.22250" lon="-35.87800">
+        <time>2024-01-15T08:01:15Z</time>
+      </trkpt>
+      <trkpt lat="-7.22300" lon="-35.87820">
+        <time>2024-01-15T08:01:20Z</time>
+      </trkpt>
+      <trkpt lat="-7.22350" lon="-35.87840">
+        <time>2024-01-15T08:01:25Z</time>
+      </trkpt>
+      <trkpt lat="-7.22400" lon="-35.87860">
+        <time>2024-01-15T08:01:30Z</time>
+      </trkpt>
+      <trkpt lat="-7.22450" lon="-35.87880">
+        <time>2024-01-15T08:01:35Z</time>
+      </trkpt>
+      <trkpt lat="-7.22500" lon="-35.87900">
+        <time>2024-01-15T08:01:40Z</time>
+      </trkpt>
+      <trkpt lat="-7.22550" lon="-35.87920">
+        <time>2024-01-15T08:01:45Z</time>
+      </trkpt>
+      <trkpt lat="-7.22600" lon="-35.87940">
+        <time>2024-01-15T08:01:50Z</time>
+      </trkpt>
+      <trkpt lat="-7.22650" lon="-35.87960">
+        <time>2024-01-15T08:01:55Z</time>
+      </trkpt>
+      <trkpt lat="-7.22700" lon="-35.87980">
+        <time>2024-01-15T08:02:00Z</time>
+      </trkpt>
+      <trkpt lat="-7.22750" lon="-35.88000">
+        <time>2024-01-15T08:02:05Z</time>
+      </trkpt>
+      <trkpt lat="-7.22800" lon="-35.88020">
+        <time>2024-01-15T08:02:10Z</time>
+      </trkpt>
+      <trkpt lat="-7.22850" lon="-35.88040">
+        <time>2024-01-15T08:02:15Z</time>
+      </trkpt>
+      <trkpt lat="-7.22900" lon="-35.88060">
+        <time>2024-01-15T08:02:20Z</time>
+      </trkpt>
+      <trkpt lat="-7.22950" lon="-35.88080">
+        <time>2024-01-15T08:02:25Z</time>
+      </trkpt>
+      <trkpt lat="-7.23000" lon="-35.88100">
+        <time>2024-01-15T08:02:30Z</time>
+      </trkpt>
+      <trkpt lat="-7.23050" lon="-35.88100">
+        <time>2024-01-15T08:02:35Z</time>
+      </trkpt>
+      <trkpt lat="-7.23100" lon="-35.88100">
+        <time>2024-01-15T08:02:40Z</time>
+      </trkpt>
+      <trkpt lat="-7.23150" lon="-35.88100">
+        <time>2024-01-15T08:02:45Z</time>
+      </trkpt>
+      <trkpt lat="-7.23200" lon="-35.88100">
+        <time>2024-01-15T08:02:50Z</time>
+      </trkpt>
+      <trkpt lat="-7.23250" lon="-35.88100">
+        <time>2024-01-15T08:02:55Z</time>
+      </trkpt>
+      <trkpt lat="-7.23300" lon="-35.88100">
+        <time>2024-01-15T08:03:00Z</time>
+      </trkpt>
+      <trkpt lat="-7.23350" lon="-35.88100">
+        <time>2024-01-15T08:03:05Z</time>
+      </trkpt>
+      <trkpt lat="-7.23400" lon="-35.88100">
+        <time>2024-01-15T08:03:10Z</time>
+      </trkpt>
+      <!-- Chegando no Partage Shopping Campina Grande -->
+      <trkpt lat="-7.23450" lon="-35.88110">
+        <time>2024-01-15T08:03:15Z</time>
+      </trkpt>
+      <trkpt lat="-7.23480" lon="-35.88110">
+        <time>2024-01-15T08:03:20Z</time>
+      </trkpt>
+    </trkseg>
+  </trk>
+</gpx>
