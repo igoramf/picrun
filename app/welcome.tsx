@@ -4,16 +4,21 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  ImageBackground,
 } from 'react-native';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '../src/constants';
 
 export default function WelcomeScreen() {
-  // TODO: Adicionar ImageBackground com a imagem de corredores
   return (
     <View style={styles.container}>
-      <View style={styles.gradient}>
+      <ImageBackground
+        source={require('../assets/welcome-bg.png')}
+        style={styles.background}
+        resizeMode="cover"
+      >
+        <View style={styles.overlay}>
           <SafeAreaView style={styles.content} edges={['bottom']}>
             <View style={styles.textContainer}>
               <Text style={styles.title}>Correr não</Text>
@@ -37,7 +42,8 @@ export default function WelcomeScreen() {
               </TouchableOpacity>
             </View>
           </SafeAreaView>
-      </View>
+        </View>
+      </ImageBackground>
     </View>
   );
 }
@@ -46,10 +52,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  gradient: {
+  background: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  overlay: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: '#1f2937', // Fundo escuro - TODO: trocar por imagem
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   content: {
     paddingHorizontal: 24,
