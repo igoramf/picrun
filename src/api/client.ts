@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000';
 
-const TOKEN_KEY = '@stride/token';
+const TOKEN_KEY = '@picrun/token';
 
 class ApiClient {
   private token: string | null = null;

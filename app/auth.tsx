@@ -77,7 +77,7 @@ export default function AuthScreen() {
         style={styles.content}
       >
         <View style={styles.header}>
-          <Text style={styles.logo}>STRIDE</Text>
+          <Text style={styles.logo}>PICRUN</Text>
           <Text style={styles.subtitle}>Conquiste seu território</Text>
         </View>
 

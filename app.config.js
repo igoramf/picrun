@@ -1,13 +1,13 @@
 export default {
   expo: {
-    name: "Stride",
-    slug: "stride",
+    name: "PicRun",
+    slug: "picrun",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/icon.png",
     userInterfaceStyle: "dark",
     newArchEnabled: true,
-    scheme: "stride",
+    scheme: "picrun",
     splash: {
       image: "./assets/splash-icon.png",
       resizeMode: "contain",
@@ -15,7 +15,7 @@ export default {
     },
     ios: {
       supportsTablet: false,
-      bundleIdentifier: "com.stride.app",
+      bundleIdentifier: "com.picrun.app",
       infoPlist: {
         NSLocationWhenInUseUsageDescription: "Precisamos do GPS para rastrear sua corrida e mostrar sua posição no mapa.",
         NSLocationAlwaysAndWhenInUseUsageDescription: "Precisamos do GPS em background para rastrear sua corrida mesmo com a tela bloqueada.",
@@ -24,7 +24,7 @@ export default {
       }
     },
     android: {
-      package: "com.stride.app",
+      package: "com.picrun.app",
       adaptiveIcon: {
         foregroundImage: "./assets/adaptive-icon.png",
         backgroundColor: "#0a0a0a"

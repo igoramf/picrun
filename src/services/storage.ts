@@ -3,9 +3,9 @@ import { RunData } from '../types';
 import { Territory } from '../utils/territory';
 
 const KEYS = {
-  RUNS: '@stride/runs',
-  USER_CELLS: '@stride/user_cells',
-  USER_STATS: '@stride/user_stats',
+  RUNS: '@picrun/runs',
+  USER_CELLS: '@picrun/user_cells',
+  USER_STATS: '@picrun/user_stats',
 };
 
 export interface UserStats {

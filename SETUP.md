@@ -1,4 +1,4 @@
-# Setup Local - Stride
+# Setup Local - PicRun
 
 ## Pre-requisitos
 
@@ -125,7 +125,7 @@ npx expo start --dev-client
 ## Estrutura do Projeto
 
 ```
-stride/
+picrun/
 ├── app/                    # Telas (expo-router)
 │   ├── (tabs)/             # Telas com tab bar
 │   │   ├── index.tsx       # Home (mapa)
@@ -171,7 +171,7 @@ eas build --platform android
 - Reinicie o servidor com `npx expo start --clear`
 
 ### "Location permission denied"
-- Va em Configurações > Apps > Stride > Permissões > Localização
+- Va em Configurações > Apps > PicRun > Permissões > Localização
 - Selecione "Permitir o tempo todo"
 
 ### Build demora muito

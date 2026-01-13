@@ -9,7 +9,7 @@ import { KalmanFilter } from './kalmanFilter';
 import { isValidPoint, setLastValidPoint, resetFilter, isStationary } from './gpsFilter';
 import { gpsSimulator } from './gpsSimulator';
 
-const TASK_NAME = 'STRIDE_GPS_TRACKING';
+const TASK_NAME = 'PICRUN_GPS_TRACKING';
 
 // Estado da corrida atual
 let isTracking = false;

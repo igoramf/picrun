@@ -12,7 +12,7 @@ Crie um arquivo `.gpx` com a rota desejada. Exemplo de estrutura:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<gpx version="1.1" creator="Stride App">
+<gpx version="1.1" creator="PicRun App">
   <trk>
     <name>Corrida Teste</name>
     <trkseg>
@@ -38,7 +38,7 @@ Crie um arquivo `.gpx` com a rota desejada. Exemplo de estrutura:
 
 ### 3. Testar no App
 
-1. Com a rota rodando no emulador, abra o app Stride
+1. Com a rota rodando no emulador, abra o app PicRun
 2. Clique em **INICIAR CORRIDA**
 3. O app vai rastrear a rota simulada
 4. Quando a rota completar o circuito, clique em **FINALIZAR**
