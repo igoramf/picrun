@@ -8,11 +8,11 @@ import {
   Platform,
   TouchableOpacity,
   Alert,
+  ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
 import { COLORS } from '../src/constants';
-import { Button } from '../src/components/Button';
 import { useAuth } from '../src/contexts/AuthContext';
 
 type AuthMode = 'login' | 'register';
@@ -24,22 +24,20 @@ export default function AuthScreen() {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit() {
-    if (!email || !password) {
-      Alert.alert('Erro', 'Preencha todos os campos');
-      return;
-    }
-
-    if (mode === 'register' && !username) {
-      Alert.alert('Erro', 'Preencha o nome de usuário');
-      return;
-    }
-
-    if (mode === 'register' && username.length < 3) {
-      Alert.alert('Erro', 'Nome de usuário deve ter pelo menos 3 caracteres');
-      return;
+    if (mode === 'login') {
+      if (!username || !password) {
+        Alert.alert('Erro', 'Preencha todos os campos');
+        return;
+      }
+    } else {
+      if (!email || !username || !password) {
+        Alert.alert('Erro', 'Preencha todos os campos');
+        return;
+      }
     }
 
     if (password.length < 6) {
@@ -51,7 +49,8 @@ export default function AuthScreen() {
 
     try {
       if (mode === 'login') {
-        await signIn(email, password);
+        // Para login, usa username como email (simplificado)
+        await signIn(username.includes('@') ? username : `${username}@picrun.app`, password);
       } else {
         await signUp(email, username, password);
       }
@@ -66,78 +65,126 @@ export default function AuthScreen() {
     }
   }
 
-  function toggleMode() {
-    setMode(mode === 'login' ? 'register' : 'login');
+  function handleSocialLogin(provider: string) {
+    Alert.alert('Em breve', `Login com ${provider} será implementado em breve!`);
   }
+
+  const isLogin = mode === 'login';
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => router.replace('/welcome')}>
-        <Text style={styles.backButtonText}>← Voltar</Text>
-      </TouchableOpacity>
-
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.content}
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled"
       >
-        <View style={styles.header}>
-          <Text style={styles.logo}>PICRUN</Text>
-          <Text style={styles.subtitle}>Conquiste seu território</Text>
-        </View>
-
-        <View style={styles.form}>
-          <Text style={styles.title}>
-            {mode === 'login' ? 'Entrar' : 'Criar conta'}
-          </Text>
-
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            placeholderTextColor={COLORS.textDark}
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
-
-          {mode === 'register' && (
-            <TextInput
-              style={styles.input}
-              placeholder="Nome de usuário"
-              placeholderTextColor={COLORS.textDark}
-              value={username}
-              onChangeText={setUsername}
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-          )}
-
-          <TextInput
-            style={styles.input}
-            placeholder="Senha"
-            placeholderTextColor={COLORS.textDark}
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
-
-          <Button
-            title={mode === 'login' ? 'ENTRAR' : 'CRIAR CONTA'}
-            onPress={handleSubmit}
-            loading={loading}
-            size="large"
-          />
-
-          <TouchableOpacity onPress={toggleMode} style={styles.toggleButton}>
-            <Text style={styles.toggleText}>
-              {mode === 'login'
-                ? 'Não tem conta? Criar agora'
-                : 'Já tem conta? Entrar'}
-            </Text>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          style={styles.content}
+        >
+          {/* Header */}
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => router.replace('/welcome')}
+          >
+            <Text style={styles.backText}>← Voltar</Text>
           </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
+
+          <View style={styles.header}>
+            <Text style={styles.title}>Bem vindo,</Text>
+            <Text style={styles.title}>Conquistadores!</Text>
+          </View>
+
+          {/* Form */}
+          <View style={styles.form}>
+            {/* Email (only for register) */}
+            {!isLogin && (
+              <View style={styles.inputContainer}>
+                <Text style={styles.inputIcon}>✉</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Email"
+                  placeholderTextColor={COLORS.textDark}
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+              </View>
+            )}
+
+            {/* Username */}
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputIcon}>👤</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Username"
+                placeholderTextColor={COLORS.textDark}
+                value={username}
+                onChangeText={setUsername}
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+            </View>
+
+            {/* Password */}
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputIcon}>🔒</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Password"
+                placeholderTextColor={COLORS.textDark}
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={!showPassword}
+              />
+              <TouchableOpacity
+                onPress={() => setShowPassword(!showPassword)}
+                style={styles.eyeButton}
+              >
+                <Text style={styles.eyeIcon}>{showPassword ? '👁' : '👁‍🗨'}</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Submit Button */}
+            <TouchableOpacity
+              style={[styles.submitButton, loading && styles.submitButtonDisabled]}
+              onPress={handleSubmit}
+              disabled={loading}
+            >
+              <Text style={styles.submitButtonText}>
+                {loading ? 'Aguarde...' : (isLogin ? 'Entrar' : 'Cadastrar')}
+              </Text>
+            </TouchableOpacity>
+
+            {/* Toggle Mode */}
+            <TouchableOpacity
+              onPress={() => setMode(isLogin ? 'register' : 'login')}
+              style={styles.toggleButton}
+            >
+              <Text style={styles.toggleText}>
+                {isLogin ? 'Não tem conta? Cadastre-se' : 'Já tem conta? Entrar'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Divider */}
+          <View style={styles.dividerContainer}>
+            <View style={styles.divider} />
+          </View>
+
+          {/* Social Login */}
+          <View style={styles.socialContainer}>
+            <Text style={styles.socialTitle}>Entre com</Text>
+            <TouchableOpacity
+              style={styles.socialButton}
+              onPress={() => handleSocialLogin('Google')}
+            >
+              <Text style={styles.googleIcon}>G</Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -147,60 +194,114 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.background,
   },
-  backButton: {
-    paddingHorizontal: 24,
-    paddingVertical: 12,
+  scrollContent: {
+    flexGrow: 1,
   },
-  backButtonText: {
+  content: {
+    flex: 1,
+    paddingHorizontal: 24,
+    paddingTop: 40,
+  },
+  backButton: {
+    marginBottom: 20,
+  },
+  backText: {
     color: COLORS.primary,
     fontSize: 16,
     fontWeight: '500',
   },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 24,
-  },
   header: {
-    alignItems: 'center',
-    marginBottom: 48,
+    marginBottom: 40,
   },
-  logo: {
-    fontSize: 48,
+  title: {
+    fontSize: 32,
     fontWeight: 'bold',
-    color: COLORS.primary,
-    letterSpacing: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: COLORS.textMuted,
-    marginTop: 8,
+    color: COLORS.text,
+    lineHeight: 40,
   },
   form: {
     gap: 16,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: COLORS.text,
-    marginBottom: 8,
-  },
-  input: {
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: COLORS.surface,
     borderRadius: 12,
     paddingHorizontal: 16,
-    paddingVertical: 14,
-    fontSize: 16,
-    color: COLORS.text,
     borderWidth: 1,
     borderColor: COLORS.border,
   },
+  inputIcon: {
+    fontSize: 18,
+    marginRight: 12,
+    opacity: 0.5,
+  },
+  input: {
+    flex: 1,
+    paddingVertical: 16,
+    fontSize: 16,
+    color: COLORS.text,
+  },
+  eyeButton: {
+    padding: 8,
+  },
+  eyeIcon: {
+    fontSize: 18,
+    opacity: 0.5,
+  },
+  submitButton: {
+    backgroundColor: COLORS.primary,
+    borderRadius: 12,
+    paddingVertical: 16,
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  submitButtonDisabled: {
+    opacity: 0.7,
+  },
+  submitButtonText: {
+    color: COLORS.textWhite,
+    fontSize: 18,
+    fontWeight: '600',
+  },
   toggleButton: {
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingVertical: 8,
   },
   toggleText: {
     color: COLORS.primary,
     fontSize: 14,
+  },
+  dividerContainer: {
+    marginVertical: 32,
+    alignItems: 'center',
+  },
+  divider: {
+    width: '60%',
+    height: 1,
+    backgroundColor: COLORS.border,
+  },
+  socialContainer: {
+    alignItems: 'center',
+  },
+  socialTitle: {
+    fontSize: 14,
+    color: COLORS.textMuted,
+    marginBottom: 20,
+  },
+  socialButton: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: COLORS.surface,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  googleIcon: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#4285F4',
   },
 });
