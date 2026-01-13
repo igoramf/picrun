@@ -1,0 +1,94 @@
+import React from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
+import { router } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { COLORS } from '../src/constants';
+
+export default function WelcomeScreen() {
+  // TODO: Adicionar ImageBackground com a imagem de corredores
+  return (
+    <View style={styles.container}>
+      <View style={styles.gradient}>
+          <SafeAreaView style={styles.content} edges={['bottom']}>
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>Correr não</Text>
+              <Text style={styles.title}>precisa ser</Text>
+              <Text style={styles.title}>chato!</Text>
+            </View>
+
+            <View style={styles.buttons}>
+              <TouchableOpacity
+                style={styles.registerButton}
+                onPress={() => router.push({ pathname: '/auth', params: { mode: 'register' } })}
+              >
+                <Text style={styles.registerButtonText}>Cadastre-se</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.loginButton}
+                onPress={() => router.push({ pathname: '/auth', params: { mode: 'login' } })}
+              >
+                <Text style={styles.loginButtonText}>Log In</Text>
+              </TouchableOpacity>
+            </View>
+          </SafeAreaView>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  gradient: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: '#1f2937', // Fundo escuro - TODO: trocar por imagem
+  },
+  content: {
+    paddingHorizontal: 24,
+    paddingBottom: 40,
+  },
+  textContainer: {
+    marginBottom: 40,
+  },
+  title: {
+    fontSize: 42,
+    fontWeight: 'bold',
+    color: COLORS.textWhite,
+    lineHeight: 50,
+  },
+  buttons: {
+    gap: 16,
+  },
+  registerButton: {
+    backgroundColor: COLORS.primary,
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  registerButtonText: {
+    color: COLORS.textWhite,
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  loginButton: {
+    backgroundColor: 'transparent',
+    paddingVertical: 16,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: COLORS.textWhite,
+    alignItems: 'center',
+  },
+  loginButtonText: {
+    color: COLORS.primary,
+    fontSize: 18,
+    fontWeight: '600',
+  },
+});

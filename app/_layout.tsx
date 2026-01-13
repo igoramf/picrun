@@ -1,35 +1,34 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Stack, router, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { COLORS } from '../src/constants';
 import { AuthProvider, useAuth } from '../src/contexts/AuthContext';
+import { SplashScreen } from '../src/components/SplashScreen';
 
 function RootLayoutNav() {
   const { isAuthenticated, isLoading } = useAuth();
   const segments = useSegments();
+  const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
-    if (isLoading) return;
+    if (isLoading || showSplash) return;
 
     const inAuthGroup = segments[0] === 'auth';
+    const inWelcome = segments[0] === 'welcome';
 
-    if (!isAuthenticated && !inAuthGroup) {
-      // Redireciona para login se não autenticado
-      router.replace('/auth');
-    } else if (isAuthenticated && inAuthGroup) {
+    if (!isAuthenticated && !inAuthGroup && !inWelcome) {
+      // Redireciona para welcome se não autenticado
+      router.replace('/welcome');
+    } else if (isAuthenticated && (inAuthGroup || inWelcome)) {
       // Redireciona para home se já autenticado
       router.replace('/(tabs)');
     }
-  }, [isAuthenticated, isLoading, segments]);
+  }, [isAuthenticated, isLoading, segments, showSplash]);
 
-  if (isLoading) {
-    return (
-      <View style={styles.loading}>
-        <ActivityIndicator size="large" color={COLORS.primary} />
-      </View>
-    );
+  if (showSplash) {
+    return <SplashScreen onFinish={() => setShowSplash(false)} />;
   }
 
   return (
@@ -40,6 +39,7 @@ function RootLayoutNav() {
         animation: 'slide_from_right',
       }}
     >
+      <Stack.Screen name="welcome" />
       <Stack.Screen name="auth" />
       <Stack.Screen name="(tabs)" />
       <Stack.Screen
@@ -56,7 +56,7 @@ function RootLayoutNav() {
 export default function RootLayout() {
   return (
     <GestureHandlerRootView style={styles.container}>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <AuthProvider>
         <RootLayoutNav />
       </AuthProvider>
@@ -67,12 +67,6 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  loading: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: COLORS.background,
   },
 });

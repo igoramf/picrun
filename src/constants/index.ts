@@ -34,38 +34,41 @@ export const RUN_VALIDATION = {
   MIN_TIME_IN_CELL: 3,
 };
 
-// Cores do app
+// Cores do app - Tema Branco e Laranja
 export const COLORS = {
-  background: '#0a0a0a',
-  surface: '#1a1a1a',
-  surfaceLight: '#2a2a2a',
-  primary: '#22c55e', // Verde
-  primaryLight: '#4ade80',
-  secondary: '#3b82f6', // Azul
+  background: '#ffffff',
+  surface: '#f5f5f5',
+  surfaceLight: '#fafafa',
+  primary: '#f97316', // Laranja
+  primaryLight: '#fb923c',
+  primaryDark: '#ea580c',
+  secondary: '#1f2937', // Cinza escuro
   danger: '#ef4444', // Vermelho
   dangerLight: '#f87171',
   warning: '#f59e0b',
-  text: '#ffffff',
-  textMuted: '#a1a1aa',
-  textDark: '#71717a',
-  border: '#27272a',
+  text: '#1f2937', // Texto escuro
+  textMuted: '#6b7280',
+  textDark: '#9ca3af',
+  textWhite: '#ffffff',
+  border: '#e5e7eb',
+  overlay: 'rgba(0, 0, 0, 0.5)',
 };
 
 // Cores para territórios de diferentes jogadores
 export const TERRITORY_COLORS = [
+  '#f97316', // Laranja (usuário)
   '#3b82f6', // Azul
-  '#eab308', // Amarelo
   '#ec4899', // Rosa
   '#22c55e', // Verde
   '#8b5cf6', // Roxo
-  '#f97316', // Laranja
+  '#eab308', // Amarelo
   '#06b6d4', // Ciano
   '#ef4444', // Vermelho
 ];
 
 // Mapbox
 export const MAPBOX_CONFIG = {
-  styleUrl: 'mapbox://styles/mapbox/dark-v11',
+  styleUrl: 'mapbox://styles/mapbox/light-v11',
   defaultZoom: 15,
   runningZoom: 16,
 };
