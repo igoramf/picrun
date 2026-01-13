@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Animated } from 'react-native';
+import { View, StyleSheet, Animated, Image } from 'react-native';
 import { COLORS } from '../constants';
 
 interface SplashScreenProps {
@@ -43,18 +43,17 @@ export function SplashScreen({ onFinish }: SplashScreenProps) {
 
   return (
     <View style={styles.container}>
-      <Animated.View
+      <Animated.Image
+        source={require('../../assets/logo.png')}
         style={[
-          styles.content,
+          styles.logo,
           {
             opacity,
             transform: [{ scale }],
           },
         ]}
-      >
-        <Text style={styles.logo}>PICRUN</Text>
-        <Text style={styles.subtitle}>Conquiste seu territorio</Text>
-      </Animated.View>
+        resizeMode="contain"
+      />
     </View>
   );
 }
@@ -66,18 +65,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  content: {
-    alignItems: 'center',
-  },
   logo: {
-    fontSize: 48,
-    fontWeight: 'bold',
-    color: COLORS.primary,
-    letterSpacing: 4,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: COLORS.textMuted,
-    marginTop: 8,
+    width: 280,
+    height: 100,
   },
 });
